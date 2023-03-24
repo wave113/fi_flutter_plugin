@@ -1,0 +1,88 @@
+group 'com.evilratt.flutter_zoom_sdk'
+version '1.0'
+
+buildscript {
+    repositories {
+        google()
+//        jcenter()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.1.0'
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+//        jcenter()
+        mavenCentral()
+
+        flatDir {
+            dirs project(':flutter_zoom_sdk').file('libs')
+        }
+    }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 31
+
+    defaultConfig {
+        minSdkVersion 23
+        targetSdkVersion 31
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
+        consumerProguardFiles 'proguard.txt'
+    }
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+
+    // Zoom和火山的libc++_shared.so文件冲突，需要手动指定依赖路径
+    packagingOptions {
+        pickFirst 'lib/*/libc++_shared.so'
+    }
+}
+
+
+dependencies {
+    implementation "androidx.security:security-crypto:1.1.0-alpha03"
+    implementation "com.google.crypto.tink:tink-android:1.5.0"
+    implementation "com.google.android.exoplayer:exoplayer-core:2.17.1"
+    implementation "com.google.android.exoplayer:exoplayer-ui:2.17.1"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+
+    implementation "androidx.appcompat:appcompat:1.3.1"
+    implementation "androidx.constraintlayout:constraintlayout:2.1.0"
+    implementation "com.google.android.material:material:1.4.0"
+    implementation "com.google.android:flexbox:2.0.1"
+    implementation "androidx.multidex:multidex:2.0.0"
+    implementation "com.google.code.gson:gson:2.8.1"
+    implementation "com.github.bumptech.glide:annotations:4.11.0"
+    implementation "com.github.bumptech.glide:glide:4.11.0"
+
+    implementation "androidx.recyclerview:recyclerview:1.2.1"
+    implementation "com.airbnb.android:lottie:5.0.3"
+
+    implementation "androidx.window:window:1.0.0"
+
+    implementation "androidx.window:window-java:1.0.0"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.6.0"
+    implementation "androidx.core:core-ktx:1.7.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0"
+
+    implementation "androidx.fragment:fragment-ktx:1.4.1"
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    api(name: 'commonlib', ext: 'aar')
+    api(name: 'mobilertc', ext: 'aar')
+}
